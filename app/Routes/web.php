@@ -69,6 +69,27 @@ $router->group(['prefix' => 'admin'], function ($router) {
         ->middleware([\App\Middleware\AuthMiddleware::class])
         ->name('admin.licenses.revoke');
 
+    // Backup management
+    $router->get('/backups', [\App\Controllers\Admin\BackupController::class, 'index'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.backups');
+
+    $router->post('/backups/create', [\App\Controllers\Admin\BackupController::class, 'create'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.backups.create');
+
+    $router->get('/backups/download/{filename}', [\App\Controllers\Admin\BackupController::class, 'download'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.backups.download');
+
+    $router->delete('/backups/delete/{filename}', [\App\Controllers\Admin\BackupController::class, 'delete'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.backups.delete');
+
+    $router->get('/backups/config', [\App\Controllers\Admin\BackupController::class, 'getConfig'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.backups.config');
+
 });
 
 // Customer portal routes
