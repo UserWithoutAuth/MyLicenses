@@ -1,0 +1,16 @@
+# CRITICAL SECURITY: DENY ALL ACCESS TO CRYPTOGRAPHIC KEYS
+# This directory contains the server's private/public keypairs
+# NEVER allow web access to this directory
+
+Order deny,allow
+Deny from all
+
+# Block all HTTP methods
+<Limit GET POST PUT DELETE HEAD OPTIONS TRACE CONNECT>
+    Deny from all
+</Limit>
+
+# Additional security
+<Files "*">
+    Deny from all
+</Files>

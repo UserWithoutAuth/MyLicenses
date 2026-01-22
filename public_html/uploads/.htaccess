@@ -1,0 +1,37 @@
+# CRITICAL: Prevent PHP execution in uploads directory
+# This prevents uploaded malicious files from being executed
+
+# Disable PHP engine
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+# Deny all script execution
+<FilesMatch "\.(php|php3|php4|php5|php7|php8|phtml|pl|py|jsp|asp|aspx|htm|shtml|sh|cgi|bat|exe)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Only allow specific file types (images, documents, archives)
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|pdf|zip|txt|doc|docx|xls|xlsx)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Set proper MIME types
+AddType image/jpeg .jpg .jpeg
+AddType image/png .png
+AddType image/gif .gif
+AddType application/pdf .pdf
+AddType application/zip .zip
+
+# Disable directory indexing
+Options -Indexes -ExecCGI
+
+# Remove handlers
+RemoveHandler .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .aspx .htm .shtml .sh .cgi
+RemoveType .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .aspx .htm .shtml .sh .cgi

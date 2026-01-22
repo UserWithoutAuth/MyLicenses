@@ -1,0 +1,69 @@
+{
+    "name": "license-server/php-license-manager",
+    "description": "Secure PHP License Server for C#, C++, Rust, and Python applications",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": "^7.4|^8.0|^8.1|^8.2",
+        "ext-openssl": "*",
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "ext-mbstring": "*",
+        "ext-curl": "*",
+        "vlucas/phpdotenv": "^5.5",
+        "ramsey/uuid": "^4.7",
+        "firebase/php-jwt": "^6.8",
+        "paragonie/sodium_compat": "^1.20",
+        "spatie/laravel-backup": "^8.3",
+        "league/flysystem": "^3.15",
+        "league/flysystem-aws-s3-v3": "^3.15",
+        "league/flysystem-sftp-v3": "^3.15",
+        "pragmarx/google2fa": "^8.0",
+        "bacon/bacon-qr-code": "^2.0",
+        "phpmailer/phpmailer": "^6.8",
+        "guzzlehttp/guzzle": "^7.7",
+        "monolog/monolog": "^3.4",
+        "symfony/console": "^6.3",
+        "symfony/http-foundation": "^6.3",
+        "illuminate/database": "^10.17",
+        "illuminate/pagination": "^10.17",
+        "nesbot/carbon": "^2.68",
+        "hashids/hashids": "^5.0",
+        "defuse/php-encryption": "^2.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6|^10.0",
+        "mockery/mockery": "^1.6",
+        "fakerphp/faker": "^1.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\": "database/"
+        },
+        "files": [
+            "app/Helpers/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "scripts": {
+        "post-install-cmd": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "test": "phpunit"
+    }
+}

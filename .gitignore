@@ -1,0 +1,215 @@
+# ============================================
+# LICENSE SERVER - GIT IGNORE
+# ============================================
+
+# ============================================
+# CRITICAL SECURITY FILES - NEVER COMMIT!
+# ============================================
+.env
+.env.local
+.env.*.local
+storage/keys/*.key
+storage/keys/*.pem
+storage/keys/*.crt
+*.key
+*.pem
+*.p12
+*.pfx
+
+# ============================================
+# STORAGE & CACHE
+# ============================================
+storage/logs/*
+storage/cache/*
+storage/sessions/*
+storage/backups/*
+storage/temp/*
+!storage/logs/.gitkeep
+!storage/cache/.gitkeep
+!storage/sessions/.gitkeep
+!storage/backups/.gitkeep
+!storage/temp/.gitkeep
+!storage/keys/.htaccess
+
+# ============================================
+# UPLOADS
+# ============================================
+public_html/uploads/*
+!public_html/uploads/.gitkeep
+!public_html/uploads/.htaccess
+
+# ============================================
+# COMPOSER & DEPENDENCIES
+# ============================================
+/vendor/
+composer.lock
+composer.phar
+
+# ============================================
+# NODE MODULES (if using frontend tools)
+# ============================================
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# ============================================
+# IDE & EDITOR FILES
+# ============================================
+# PHPStorm / IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# NetBeans
+nbproject/
+nbbuild/
+dist/
+nbdist/
+
+# Eclipse
+.project
+.buildpath
+.settings/
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ============================================
+# OPERATING SYSTEM FILES
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# PHP & DEBUGGING
+# ============================================
+*.log
+*.sql
+*.sqlite
+*.sqlite3
+php_errors.log
+error_log
+
+# PHPUnit
+.phpunit.result.cache
+phpunit.xml
+coverage/
+
+# PHP CS Fixer
+.php_cs.cache
+.php-cs-fixer.cache
+
+# Psalm
+psalm.xml
+
+# ============================================
+# DATABASE
+# ============================================
+*.sql.gz
+*.sql.zip
+database.sqlite
+database.sqlite3
+database/*.sqlite
+database/*.sqlite3
+
+# Database dumps (except migrations)
+database/dumps/*
+!database/migrations/
+!database/migrations/*.sql
+
+# ============================================
+# BACKUP FILES
+# ============================================
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+*.tar
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# ============================================
+# SCRIPTS (security sensitive)
+# ============================================
+# Keep these scripts but they should be deleted after use
+# Uncomment if you want to prevent accidental commits
+# scripts/generate-keypair.php
+
+# ============================================
+# TESTING & CI/CD
+# ============================================
+.phpunit.cache
+tests/_output/*
+tests/_support/_generated
+
+# ============================================
+# MISC
+# ============================================
+*.tmp
+*.temp
+.htpasswd
+.htaccess.backup
+favicon.ico.backup
+
+# ============================================
+# DOCUMENTATION BUILD FILES
+# ============================================
+docs/_build/
+docs/.doctrees/
+
+# ============================================
+# KEEP FILES (exceptions to above rules)
+# ============================================
+# These ensure empty directories are tracked
+!.gitkeep
+!.htaccess

@@ -1,0 +1,144 @@
+# License Server - Main Security Configuration
+# Optimized for Hostinger Shared Hosting
+
+# Disable directory listing
+Options -Indexes -MultiViews
+
+# Enable URL rewriting
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Force HTTPS (uncomment when SSL is configured)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Block access to sensitive files
+    RewriteRule ^\.env - [F,L]
+    RewriteRule ^composer\.(json|lock) - [F,L]
+    RewriteRule ^\.git - [F,L]
+
+    # Protect against injection attacks
+    RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
+    RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} proc/self/environ [NC,OR]
+    RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
+    RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC]
+    RewriteRule .* - [F,L]
+
+    # Block SQL injection attempts
+    RewriteCond %{QUERY_STRING} (union|select|insert|drop|update|delete|cast|create|char|convert|alter|declare|exec|script) [NC]
+    RewriteRule .* - [F,L]
+
+    # Route all requests to index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?request=$1 [L,QSA]
+</IfModule>
+
+# Block access to hidden files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Block access to backup and config files
+<FilesMatch "\.(bak|backup|old|sql|log|md|txt|git|env|sh|ini|conf|config)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Prevent execution of PHP in uploads directory
+<Directory "uploads">
+    php_flag engine off
+    Options -ExecCGI
+    AddHandler cgi-script .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .htm .shtml .sh .cgi
+    RemoveHandler .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .htm .shtml .sh .cgi
+</Directory>
+
+# Security headers
+<IfModule mod_headers.c>
+    # Prevent MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Prevent clickjacking
+    Header always set X-Frame-Options "DENY"
+
+    # XSS Protection
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Permissions Policy
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # HSTS (HTTP Strict Transport Security) - uncomment when SSL is active
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # Content Security Policy
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none';"
+
+    # Remove server signature
+    Header unset Server
+    Header unset X-Powered-By
+</IfModule>
+
+# PHP Security Settings
+<IfModule mod_php7.c>
+    # Hide PHP version
+    php_flag expose_php Off
+    php_flag display_errors Off
+    php_flag log_errors On
+
+    # File upload limits
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 60
+    php_value max_input_time 60
+    php_value memory_limit 256M
+
+    # Session security
+    php_flag session.cookie_httponly On
+    php_flag session.cookie_secure On
+    php_value session.cookie_samesite Strict
+    php_value session.gc_maxlifetime 1800
+</IfModule>
+
+# Disable server signature
+ServerSignature Off
+
+# Prevent access to composer files
+<FilesMatch "composer\.(json|lock)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Prevent access to package files
+<FilesMatch "package(-lock)?\.(json|lock)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# Compression for better performance
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Browser caching for static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
+</IfModule>

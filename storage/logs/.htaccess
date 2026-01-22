@@ -1,0 +1,9 @@
+# DENY ALL ACCESS TO LOGS
+# Application logs, security logs, and audit trails are stored here
+
+Order deny,allow
+Deny from all
+
+<Limit GET POST PUT DELETE HEAD OPTIONS>
+    Deny from all
+</Limit>

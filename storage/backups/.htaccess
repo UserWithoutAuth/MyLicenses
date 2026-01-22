@@ -1,0 +1,9 @@
+# DENY ALL ACCESS TO BACKUPS
+# Database backups and system backups are stored here
+
+Order deny,allow
+Deny from all
+
+<Limit GET POST PUT DELETE HEAD OPTIONS>
+    Deny from all
+</Limit>
