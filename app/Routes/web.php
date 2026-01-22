@@ -22,21 +22,52 @@ $router->get('/', function () {
     ];
 })->name('home');
 
-// Admin routes (will be expanded later with authentication)
+// Admin routes
 $router->group(['prefix' => 'admin'], function ($router) {
 
+    // Public routes (no auth required)
     $router->get('/login', [\App\Controllers\Admin\AuthController::class, 'showLogin'])
         ->name('admin.login');
 
     $router->post('/login', [\App\Controllers\Admin\AuthController::class, 'login'])
         ->name('admin.login.post');
 
+    $router->post('/verify-2fa', [\App\Controllers\Admin\AuthController::class, 'verify2FA'])
+        ->name('admin.verify2fa');
+
+    // Protected routes (require authentication)
     $router->post('/logout', [\App\Controllers\Admin\AuthController::class, 'logout'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
         ->name('admin.logout');
 
-    // Admin dashboard (requires authentication middleware)
     $router->get('/dashboard', [\App\Controllers\Admin\DashboardController::class, 'index'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
         ->name('admin.dashboard');
+
+    $router->get('/api/statistics', [\App\Controllers\Admin\DashboardController::class, 'statistics'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.api.statistics');
+
+    // License management
+    $router->get('/licenses', [\App\Controllers\Admin\LicenseAdminController::class, 'index'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.licenses');
+
+    $router->get('/licenses/create', [\App\Controllers\Admin\LicenseAdminController::class, 'create'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.licenses.create');
+
+    $router->post('/licenses', [\App\Controllers\Admin\LicenseAdminController::class, 'store'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.licenses.store');
+
+    $router->get('/licenses/{id}', [\App\Controllers\Admin\LicenseAdminController::class, 'show'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.licenses.show');
+
+    $router->post('/licenses/{id}/revoke', [\App\Controllers\Admin\LicenseAdminController::class, 'revoke'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.licenses.revoke');
 
 });
 
