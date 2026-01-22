@@ -69,6 +69,39 @@ $router->group(['prefix' => 'admin'], function ($router) {
         ->middleware([\App\Middleware\AuthMiddleware::class])
         ->name('admin.licenses.revoke');
 
+    // Product management
+    $router->get('/products', [\App\Controllers\Admin\ProductController::class, 'index'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.products');
+
+    $router->get('/products/create', [\App\Controllers\Admin\ProductController::class, 'create'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.products.create');
+
+    $router->post('/products', [\App\Controllers\Admin\ProductController::class, 'store'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.products.store');
+
+    $router->get('/products/{id}', [\App\Controllers\Admin\ProductController::class, 'show'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.products.show');
+
+    $router->get('/products/{id}/edit', [\App\Controllers\Admin\ProductController::class, 'edit'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.products.edit');
+
+    $router->put('/products/{id}', [\App\Controllers\Admin\ProductController::class, 'update'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.products.update');
+
+    $router->delete('/products/{id}', [\App\Controllers\Admin\ProductController::class, 'delete'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.products.delete');
+
+    $router->post('/products/{id}/toggle', [\App\Controllers\Admin\ProductController::class, 'toggleStatus'])
+        ->middleware([\App\Middleware\AuthMiddleware::class])
+        ->name('admin.products.toggle');
+
     // Backup management
     $router->get('/backups', [\App\Controllers\Admin\BackupController::class, 'index'])
         ->middleware([\App\Middleware\AuthMiddleware::class])
