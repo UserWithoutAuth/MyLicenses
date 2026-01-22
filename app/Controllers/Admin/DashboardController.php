@@ -360,6 +360,7 @@ HTML;
             <a href="/admin/licenses" class="nav-link">Licenses</a>
             <a href="/admin/customers" class="nav-link">Customers</a>
             <a href="/admin/products" class="nav-link">Products</a>
+            <a href="/admin/backups" class="nav-link">Backups</a>
             <a href="/admin/reports" class="nav-link">Reports</a>
             <a href="/admin/settings" class="nav-link">Settings</a>
         </div>
